@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld';
+import ChildList from "./child/ChildList.view"
 
 export default {
   components: {
-    HelloWorld,
+    ChildList,
   },
 };
 </script>

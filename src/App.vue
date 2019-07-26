@@ -14,21 +14,21 @@
     </v-app-bar>
 
     <v-content>
-      <HelloWorld />
-      <v-btn absolute dark fab bottom right color="pink">
-        <v-icon>add</v-icon>
-      </v-btn>
+      <ChildList />
     </v-content>
+    <v-btn fixed dark fab bottom right color="pink">
+      <v-icon>fa-plus</v-icon>
+    </v-btn>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import ChildList from "./views/child/ChildList.view";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    ChildList
   },
   data: () => ({
     //
