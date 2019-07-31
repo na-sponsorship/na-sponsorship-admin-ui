@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-container
+	div
 		v-navigation-drawer(v-model="drawer" app)
 			v-list(dense)
 				v-list-item(@click="")
@@ -11,7 +11,7 @@
 			v-spacer
 			v-toolbar-items
 				v-btn(text @click="logout()") Logout
-		v-content: router-view
+		v-content: v-layout: v-flex: router-view.ma-5
 </template>
 
 <script>
