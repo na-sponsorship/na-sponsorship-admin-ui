@@ -10,8 +10,26 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: Home
+      name: "login",
+      component: () =>
+        import(/* webpackChunkName: "login" */ "@views/Login.view.vue")
+    },
+    {
+      path: "/dashboard",
+      name: "login",
+      component: () =>
+        import(/* webpackChunkName: "dashboard" */ "@views/layout/Dashboard.layout.vue"),
+      children: [
+        {
+          path: "/",
+          name: "child.list",
+          meta: {
+            title: "Children"
+          },
+          component: () =>
+            import(/* webpackChunkName: "dashboard" */ "@views/child/ChildList.view.vue")
+        }
+      ]
     },
     {
       path: "/about",
