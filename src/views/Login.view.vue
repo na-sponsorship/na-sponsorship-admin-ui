@@ -22,7 +22,7 @@ export default {
     };
   },
   methods: {
-    login(credentials) {
+    login() {
       this.$router.replace("/dashboard");
     }
   }
