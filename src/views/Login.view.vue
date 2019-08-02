@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import store from "store";
+
 export default {
   data() {
     return {
@@ -22,8 +24,19 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.$router.replace("/dashboard");
+    login(credentials) {
+      this.$axios
+        .post(`${process.env.VUE_APP_API}/auth/login`, credentials)
+        .then(({ data }) => {
+          this.$axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${data.access_token}`;
+
+          // Save the access token in local storage as welll
+          store.set("access_token", data.access_token);
+
+          this.$router.replace("/dashboard");
+        });
     }
   }
 };
