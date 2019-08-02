@@ -9,7 +9,7 @@
           v-text-field(label="Password" prepend-icon="fa-lock" type="password" v-model="credentials.password")
         v-card-actions
           v-spacer
-          v-btn(color="primary" @click="login(credentials)") Login
+          v-btn(color="primary" @click="login(credentials)" :loading="loggingIn") Log In
 </template>
 
 <script>
@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       incorrectPassword: false,
+      loggingIn: false,
       credentials: {
         username: null,
         password: null
@@ -27,6 +28,8 @@ export default {
   },
   methods: {
     login(credentials) {
+      this.loggingIn = true;
+
       this.$axios
         .post(`${process.env.VUE_APP_API}/auth/login`, credentials)
         .then(({ data }) => {
@@ -41,6 +44,7 @@ export default {
         })
         .catch(() => {
           this.incorrectPassword = true;
+          this.loggingIn = false;
         });
     }
   }
