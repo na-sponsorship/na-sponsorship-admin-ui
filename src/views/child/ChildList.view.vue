@@ -1,44 +1,38 @@
-<template>
-  <v-data-table
-    :headers="headers"
-    :items="children"
-    :items-per-page="5"
-    class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Children</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">Add Child</v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ dialogTitle }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field
-                      v-model="editedItem.firstName"
-                      label="First Name"
-                    ></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1">Cancel</v-btn>
-              <v-btn color="blue darken-1">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-  </v-data-table>
+<template lang="pug">
+  v-data-table.elevation-1(:headers="headers" :items="children" :items-per-page="5")
+    template(v-slot:top)
+      v-toolbar(flat color="white")
+        v-toolbar-title Children
+        v-spacer
+        v-dialog(v-model="dialog" max-width="800px")
+          template(v-slot:activator="{on}")
+            v-btn.mb-2(color="primary" dark v-on="on") Add Child
+          v-card
+            v-card-title: span.headline {{dialogTitle}}
+            v-card-text
+              v-form
+                v-container(grid-list-xl)
+                  v-layout(wrap)
+                    v-flex: v-text-field(v-model="editedItem.firstName" label="First name")
+                    v-flex: v-text-field(v-model="editedItem.firstName" label="Last name")
+                  v-layout
+                    v-flex
+                      v-menu(v-model="pickBirthday" :close-on-content-click="false" transition="scale-transition" offset-y full-width min-width="290px")
+                        template(v-slot:activator="{on}")
+                          v-text-field(label="Birthday" readonly v-on="on")
+                        v-date-picker(@input="pickBirthday = true")
+                    v-flex: v-text-field(v-model="editedItem.firstName" label="Grade")
+                  v-layout
+                    v-flex: v-textarea(v-model="editedItem.firstName" label="Story")
+                  v-layout
+                    v-flex: v-select(:items="['male', 'female']" label="Gender")
+                    v-flex: v-text-field(v-model="editedItem.firstName" label="Sponsors Needed")
+                  v-layout
+                    v-flex: v-file-input(label="image")
+            v-card-actions
+              v-spacer
+              v-btn(color="blue darken-1") Cancel
+              v-btn(color="blue darken-1") Save
 </template>
 
 <script>
@@ -47,6 +41,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      pickBirthday: false,
       dialog: false,
       editedIndex: -1,
       editedItem: {
