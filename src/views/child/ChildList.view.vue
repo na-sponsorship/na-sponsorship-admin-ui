@@ -37,6 +37,7 @@
 
 <script>
 import axios from "axios";
+import store from "store";
 
 export default {
   data() {
@@ -76,8 +77,15 @@ export default {
   },
   methods: {
     save(child) {
-      this.$refs.image.server = `${process.env.VUE_APP_API}/children/upload`;
-      
+      this.$refs.image.server = {
+        url: `${process.env.VUE_APP_API}/children/upload`,
+        process: {
+          headers: {
+            Authorization: `Bearer ${store.get("access_token")}`
+          }
+        }
+      };
+
       axios.post(`${process.env.VUE_APP_API}/children`, child).then(id => {
         this.$refs.image.processFiles();
       });
