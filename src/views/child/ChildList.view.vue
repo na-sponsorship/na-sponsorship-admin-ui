@@ -86,7 +86,14 @@ export default {
         }
       };
 
-      axios.post(`${process.env.VUE_APP_API}/children`, child).then(id => {
+      axios.post(`${process.env.VUE_APP_API}/children`, child).then(res => {
+        this.$refs.image.getFile().setMetadata("child-id", res.data);
+        this.$refs.image
+          .getFile()
+          .setMetadata(
+            "child-name",
+            `${this.editedItem.firstName} ${this.editedItem.lastName}`
+          );
         this.$refs.image.processFiles();
       });
     }
