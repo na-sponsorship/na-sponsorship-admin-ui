@@ -25,8 +25,8 @@ v-card
           v-text-field.flex(v-model="model.activeSponsors" label="Active Sponsors" disabled)
   v-card-actions
     v-spacer
-    v-btn(color="blue darken-1" @click="dismiss()") Cancel
-    v-btn(color="blue darken-1" @click="save(editedItem)") Save   
+    v-btn(text color="primary" @click="dismiss()") Cancel
+    v-btn(color="primary" @click="save(editedItem)") Save   
 </template>
 
 <script>
