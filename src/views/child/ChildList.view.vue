@@ -7,7 +7,7 @@
         v-dialog(v-model="dialog" max-width="800px" persistent)
           template(v-slot:activator="{on}")
             v-btn.mb-2(color="primary" dark v-on="on") Add Child
-          ChildEditDialog(@dismissed="dialog = false")
+          ChildEditDialog(@dismissed="onDismissed")
           
 </template>
 
@@ -38,9 +38,18 @@ export default {
     };
   },
   created() {
-    axios.get(`${process.env.VUE_APP_API}/children`).then(children => {
-      this.children = children.data.items;
-    });
+    this.getChildren();
+  },
+  methods: {
+    onDismissed() {
+      this.dialog = false;
+      this.getChildren();
+    },
+    getChildren() {
+      axios.get(`${process.env.VUE_APP_API}/children`).then(children => {
+        this.children = children.data.items;
+      });
+    }
   }
 };
 </script>
