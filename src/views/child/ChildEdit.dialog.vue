@@ -75,6 +75,18 @@ export default {
     },
     dismiss() {
       this.$emit("dismissed");
+      
+      // Clear model
+      this.model = {
+        firstName: null,
+        lastName: null,
+        dateOfBirth: null,
+        grade: null,
+        story: null,
+        gender: null,
+        sponsorsNeeded: 2,
+        activeSponsors: 0
+      };
     }
   }
 };
