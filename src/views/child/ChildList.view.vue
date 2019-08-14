@@ -13,7 +13,6 @@
 
 <script>
 import axios from "axios";
-import store from "store";
 
 import ChildEditDialog from "./ChildEdit.dialog";
 

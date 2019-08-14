@@ -30,6 +30,9 @@ v-card
 </template>
 
 <script>
+import store from "store";
+import axios from "axios";
+
 export default {
   data() {
     return {
