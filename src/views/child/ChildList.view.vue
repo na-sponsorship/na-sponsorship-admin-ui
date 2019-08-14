@@ -42,30 +42,6 @@ export default {
     axios.get(`${process.env.VUE_APP_API}/children`).then(children => {
       this.children = children.data.items;
     });
-  },
-
-  methods: {
-    save(child) {
-      this.$refs.image.server = {
-        url: `${process.env.VUE_APP_API}/children/upload`,
-        process: {
-          headers: {
-            Authorization: `Bearer ${store.get("access_token")}`
-          }
-        }
-      };
-
-      axios.post(`${process.env.VUE_APP_API}/children`, child).then(res => {
-        this.$refs.image.getFile().setMetadata("child-id", res.data);
-        this.$refs.image
-          .getFile()
-          .setMetadata(
-            "child-name",
-            `${this.editedItem.firstName} ${this.editedItem.lastName}`
-          );
-        this.$refs.image.processFiles();
-      });
-    }
   }
 };
 </script>

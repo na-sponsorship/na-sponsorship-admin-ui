@@ -26,7 +26,7 @@ v-card
   v-card-actions
     v-spacer
     v-btn(text color="primary" @click="dismiss()") Cancel
-    v-btn(color="primary" @click="save(editedItem)") Save   
+    v-btn(color="primary" @click="save(model)") Save   
 </template>
 
 <script>
@@ -52,6 +52,24 @@ export default {
     }
   },
   methods: {
+    save(child) {
+      this.$refs.image.server = {
+        url: `${process.env.VUE_APP_API}/children/upload`,
+        process: {
+          headers: {
+            Authorization: `Bearer ${store.get("access_token")}`
+          }
+        }
+      };
+
+      axios.post(`${process.env.VUE_APP_API}/children`, child).then(res => {
+        this.$refs.image.getFile().setMetadata("child-id", res.data);
+        this.$refs.image
+          .getFile()
+          .setMetadata("child-name", `${child.firstName} ${child.lastName}`);
+        this.$refs.image.processFiles().then(() => this.$emit("dismissed"));
+      });
+    },
     dismiss() {
       this.$emit("dismissed");
     }
