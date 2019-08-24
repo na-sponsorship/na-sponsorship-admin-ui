@@ -1,18 +1,32 @@
 <template lang="pug">
-  v-data-table.elevation-1(:headers="headers" :items="children" :items-per-page="5")
-    template(v-slot:top)
-      v-toolbar(flat color="white")
-        v-toolbar-title Children
-        v-spacer
-        v-dialog(v-model="dialog" max-width="800px" persistent)
-          template(v-slot:activator="{on}")
-            v-btn.mb-2(color="primary" dark v-on="on") Add Child
-          ChildEditDialog(@dismissed="onDismissed")
-          
+  v-container
+    v-row
+      v-col(cols="12"): v-row(justify="end"): v-col.py-0(cols="auto"): v-btn(color="primary" @click="editChild(null)") Add Child
+      v-col: v-card
+        v-card-title: v-row(no-gutters dense align="center" justify="space-between")
+          v-col(cols="8") Children
+          v-col: v-text-field(label="Search" v-model="searchQuery")
+        v-card-text.pa-0
+          v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="5" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
+            template(v-slot:item.action="{item}")
+              v-btn(text color="primary") Edit
+              v-btn(text color="error" @click="activeChild = item; confirmDelete = true;") Delete
+    v-dialog(v-model="isEditing" max-width="800px" persistent)
+      ChildEditDialog(@dismissed="onDismissed")        
+    v-dialog(v-model="confirmDelete" v-if="confirmDelete" width="500")
+      v-card
+        v-card-title(primary-title) Are you sure you want to delete&nbsp;
+          i {{activeChild.firstName}} {{activeChild.lastName}}? 
+        v-divider
+        v-card-actions
+          div.flex-grow-1
+          v-btn(color="primary" text @click="confirmDelete = false") No     
+          v-btn(color="primary" @click="removeChild(activeChild)") Yes     
 </template>
 
 <script>
 import axios from "axios";
+import { isNull } from "lodash";
 
 import ChildEditDialog from "./ChildEdit.dialog";
 
@@ -20,7 +34,11 @@ export default {
   components: { ChildEditDialog },
   data() {
     return {
-      dialog: false,
+      isLoading: false,
+      isEditing: false,
+      confirmDelete: false,
+      activeChild: null,
+      searchQuery: null,
       editedIndex: -1,
       headers: [
         {
@@ -32,6 +50,11 @@ export default {
           text: "Last Name",
           sortable: true,
           value: "lastName"
+        },
+        {
+          value: "action",
+          align: "end",
+          sortable: false
         }
       ],
       children: []
@@ -41,13 +64,31 @@ export default {
     this.getChildren();
   },
   methods: {
+    editChild(child) {
+      if (!isNull(child)) {
+        this.activeChild = child;
+      }
+
+      this.isEditing = true;
+    },
+    removeChild(child) {
+      this.confirmDelete = false;
+
+      axios
+        .delete(`${process.env.VUE_APP_API}/children/${child.id}`)
+        .then(() => {
+          this.getChildren();
+        });
+    },
     onDismissed() {
-      this.dialog = false;
+      this.isEditing = false;
       this.getChildren();
     },
     getChildren() {
+      this.isLoading = true;
       axios.get(`${process.env.VUE_APP_API}/children`).then(children => {
         this.children = children.data.items;
+        this.isLoading = false;
       });
     }
   }

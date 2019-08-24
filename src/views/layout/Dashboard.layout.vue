@@ -11,7 +11,7 @@
 			v-spacer
 			v-toolbar-items
 				v-btn(text @click="logout()") Logout
-		v-content: v-layout: v-flex: router-view.ma-5
+		v-content: v-layout: v-flex: router-view
 </template>
 
 <script>
