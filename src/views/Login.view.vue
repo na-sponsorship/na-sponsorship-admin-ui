@@ -6,7 +6,7 @@
         v-card-text: v-form
           v-alert(v-show="incorrectPassword" type="error" dense) Incorrect username or password
           v-text-field(label="Username" prepend-icon="fa-user-alt" type="text" v-model="credentials.username")
-          v-text-field(label="Password" prepend-icon="fa-lock" type="password" v-model="credentials.password")
+          v-text-field(label="Password" prepend-icon="fa-lock" type="password" v-model="credentials.password" v-on:keydown.enter.prevent="login(credentials)")
         v-card-actions
           v-spacer
           v-btn(color="primary" @click="login(credentials)" :loading="loggingIn") Log In
