@@ -9,10 +9,10 @@
         v-card-text.pa-0
           v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="5" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
             template(v-slot:item.action="{item}")
-              v-btn(text color="primary") Edit
+              v-btn(text color="primary" @click="activeChild = item; isEditing = true;") Edit
               v-btn(text color="error" @click="activeChild = item; confirmDelete = true;") Delete
     v-dialog(v-model="isEditing" max-width="800px" persistent)
-      ChildEditDialog(@dismissed="onDismissed")        
+      ChildEditDialog(@dismissed="onDismissed" :data="activeChild")        
     v-dialog(v-model="confirmDelete" v-if="confirmDelete" width="500")
       v-card
         v-card-title(primary-title) Are you sure you want to delete&nbsp;
@@ -83,6 +83,7 @@ export default {
     onDismissed() {
       this.isEditing = false;
       this.getChildren();
+      this.activeChild = null;
     },
     getChildren() {
       this.isLoading = true;

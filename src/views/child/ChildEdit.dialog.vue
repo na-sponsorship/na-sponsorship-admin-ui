@@ -32,11 +32,23 @@ v-card
 <script>
 import store from "store";
 import axios from "axios";
+import { isNull } from "lodash";
 
 export default {
+  props: ["data"],
   data() {
     return {
       isSelectingBirthday: false,
+      filePondConfig: {
+        ref: "image",
+        acceptedFileTypes: "image/jpeg, image/png",
+        labelIdle: "Select a photo",
+        instantUpload: "false",
+        allowImageCrop: "true",
+        imageCropAspectRatio: "1:1",
+        allowImageResize: "true",
+        imageResizeTargetWidth: "700"
+      },
       model: {
         firstName: null,
         lastName: null,
@@ -49,13 +61,24 @@ export default {
       }
     };
   },
+  watch: {
+    data: function(newVal) {
+      if (!isNull(newVal)) {
+        this.model = newVal;
+      }
+    }
+  },
   computed: {
     dialogTitle() {
-      return this.editedIndex === -1 ? "Add Child" : "Edit Child";
+      return !isNull(this.data) ? "Edit Child" : "Add Child";
     }
   },
   methods: {
+    create() {},
+    update() {},
+
     save(child) {
+      this.$v.$touch();
       this.$refs.image.server = {
         url: `${process.env.VUE_APP_API}/children/upload`,
         process: {
@@ -75,7 +98,7 @@ export default {
     },
     dismiss() {
       this.$emit("dismissed");
-      
+
       // Clear model
       this.model = {
         firstName: null,
