@@ -93,11 +93,12 @@ export default {
         this.$refs.image
           .getFile()
           .setMetadata("child-name", `${child.firstName} ${child.lastName}`);
-        this.$refs.image.processFiles().then(() => this.$emit("dismissed"));
+        this.$refs.image.processFiles().then(() => this.dismiss());
       });
     },
     dismiss() {
       this.$emit("dismissed");
+      this.$refs.image.removeFiles();
 
       // Clear model
       this.model = {
