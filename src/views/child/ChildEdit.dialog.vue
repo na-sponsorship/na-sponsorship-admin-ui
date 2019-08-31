@@ -1,16 +1,16 @@
 <template lang="pug">
 v-card
-  v-card-title: span.headline {{dialogTitle}}
+  v-card-title: span.headline {{isEditing ? 'Edit' : 'Add'}} Child
   v-card-text
     v-form
       v-container(grid-list-xl)
         h2.title Child Information
         v-layout
-          v-flex(grow md4): file-pond(ref="image" accepted-file-types="image/jpeg, image/png" label-idle="Select a photo" instant-upload="false")                  
+          v-flex(grow md4): file-pond(v-bind="filePondConfig")                  
           v-flex
             v-layout
               v-text-field.flex(v-model="model.firstName" label="First name")
-              v-text-field.flex(v-model="model.lastName" label="Last name")
+              v-text-field.flex(v-model="model.lastName" label="Last name" required)
             v-layout
               v-text-field.flex(v-model="model.grade" label="Grade") 
               v-select.flex(v-model="model.gender" :items="['male', 'female']" label="Gender")
@@ -47,7 +47,15 @@ export default {
         allowImageCrop: "true",
         imageCropAspectRatio: "1:1",
         allowImageResize: "true",
-        imageResizeTargetWidth: "700"
+        imageResizeTargetWidth: "700",
+        server: {
+          url: `${process.env.VUE_APP_API}/children/upload`,
+          process: {
+            headers: {
+              Authorization: `Bearer ${store.get("access_token")}`
+            }
+          }
+        }
       },
       model: {
         firstName: null,
@@ -69,30 +77,29 @@ export default {
     }
   },
   computed: {
-    dialogTitle() {
-      return !isNull(this.data) ? "Edit Child" : "Add Child";
+    isEditing() {
+      return !isNull(this.data);
     }
   },
   methods: {
-    create() {},
-    update() {},
-
     save(child) {
-      this.$v.$touch();
-      this.$refs.image.server = {
-        url: `${process.env.VUE_APP_API}/children/upload`,
-        process: {
-          headers: {
-            Authorization: `Bearer ${store.get("access_token")}`
-          }
-        }
-      };
+      const imageFile = this.$refs.image.getFile();
 
-      axios.post(`${process.env.VUE_APP_API}/children`, child).then(res => {
-        this.$refs.image.getFile().setMetadata("child-id", res.data);
-        this.$refs.image
-          .getFile()
-          .setMetadata("child-name", `${child.firstName} ${child.lastName}`);
+      axios({
+        method: this.isEditing ? "PUT" : "POST",
+        url: `${process.env.VUE_APP_API}/children`,
+        data: child
+      }).then(({ data }) => {
+        imageFile.setMetadata("child-id", data);
+        imageFile.setMetadata(
+          "child-name",
+          `${child.firstName} ${child.lastName}`
+        );
+
+        if (this.isEditing) {
+          imageFile.setMetadata("is-editing", true);
+        }
+
         this.$refs.image.processFiles().then(() => this.dismiss());
       });
     },
