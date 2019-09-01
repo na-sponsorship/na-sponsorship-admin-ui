@@ -5,6 +5,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import axios from "./plugins/axios";
 import vueFilePond from "vue-filepond";
+import Cloudinary from "cloudinary-vue";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
@@ -19,6 +20,11 @@ Vue.component(
   vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 );
 
+Vue.use(Cloudinary, {
+  configuration: {
+    cloudName: process.env.VUE_APP_CLAUDINARY_CLOUD_NAME
+  }
+});
 Vue.use(axios);
 
 new Vue({

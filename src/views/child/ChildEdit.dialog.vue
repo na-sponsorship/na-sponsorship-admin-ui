@@ -6,7 +6,9 @@ v-card
       v-container(grid-list-xl)
         h2.title Child Information
         v-layout
-          v-flex(grow md4): file-pond(v-bind="filePondConfig")                  
+          v-flex(grow md4)
+            cld-image(v-if="model.image" :publicId="model.image"): cld-transformation(width="250" height="350" gravity="face" crop="fill")
+            file-pond(v-if="!model.image" v-bind="filePondConfig")               
           v-flex
             v-layout
               v-text-field.flex(v-model="model.firstName" label="First name")
@@ -32,9 +34,11 @@ v-card
 <script>
 import store from "store";
 import axios from "axios";
-import { isNull } from "lodash";
+import { isNull, isEmpty } from "lodash";
+import { CldImage, CldTransformation } from "cloudinary-vue";
 
 export default {
+  components: { CldImage, CldTransformation },
   props: ["data"],
   data() {
     return {
@@ -49,8 +53,9 @@ export default {
         allowImageResize: "true",
         imageResizeTargetWidth: "700",
         server: {
-          url: `${process.env.VUE_APP_API}/children/upload`,
+          url: `${process.env.VUE_APP_API}/children`,
           process: {
+            url: "/upload",
             headers: {
               Authorization: `Bearer ${store.get("access_token")}`
             }
@@ -90,22 +95,29 @@ export default {
         url: `${process.env.VUE_APP_API}/children`,
         data: child
       }).then(({ data }) => {
-        imageFile.setMetadata("child-id", data);
-        imageFile.setMetadata(
-          "child-name",
-          `${child.firstName} ${child.lastName}`
-        );
+        if (!isNull(imageFile)) {
+          imageFile.setMetadata("child-id", data);
+          imageFile.setMetadata(
+            "child-name",
+            `${child.firstName} ${child.lastName}`
+          );
 
-        if (this.isEditing) {
-          imageFile.setMetadata("is-editing", true);
+          if (this.isEditing) {
+            imageFile.setMetadata("is-editing", true);
+          }
+
+          this.$refs.image.processFiles().then(() => this.dismiss());
+        } else {
+          this.dismiss();
         }
-
-        this.$refs.image.processFiles().then(() => this.dismiss());
       });
     },
     dismiss() {
       this.$emit("dismissed");
-      this.$refs.image.removeFiles();
+
+      if (this.$refs.image) {
+        this.$refs.image.removeFiles();
+      }
 
       // Clear model
       this.model = {
