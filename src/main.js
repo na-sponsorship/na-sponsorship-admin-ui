@@ -1,10 +1,11 @@
 import Vue from "vue";
+import vueFilePond from "vue-filepond";
+
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import axios from "./plugins/axios";
-import vueFilePond from "vue-filepond";
 import Cloudinary from "cloudinary-vue";
 
 import "filepond/dist/filepond.min.css";
