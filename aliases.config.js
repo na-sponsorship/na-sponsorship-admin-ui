@@ -16,7 +16,8 @@ const aliases = {
   "@design": "src/assets/index.scss",
   "@lib": "src/lib",
   "@locale": "src/i18n/locale",
-  "@mixins": "src/mixins"
+  "@mixins": "src/mixins",
+  "@entities": "src/store/entities"
 };
 
 module.exports = {
