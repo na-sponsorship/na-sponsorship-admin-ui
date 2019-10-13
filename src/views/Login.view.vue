@@ -22,31 +22,28 @@ export default {
       loggingIn: false,
       credentials: {
         username: null,
-        password: null
-      }
+        password: null,
+      },
     };
   },
   methods: {
-    login(credentials) {
+    async login(credentials) {
       this.loggingIn = true;
 
-      this.$axios
-        .post(`${process.env.VUE_APP_API}/auth/login`, credentials)
-        .then(({ data }) => {
-          this.$axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${data.access_token}`;
+      try {
+        const {data} = await this.$axios.post(
+          `${process.env.VUE_APP_API}/auth/login`,
+          credentials
+        );
 
-          // Save the access token in local storage as welll
-          store.set("access_token", data.access_token);
+        store.set("access_token", data.access_token);
+        this.$router.replace("/dashboard");
+      } catch {
+        this.incorrectPassword = true;
+      }
 
-          this.$router.replace("/dashboard");
-        })
-        .catch(() => {
-          this.incorrectPassword = true;
-          this.loggingIn = false;
-        });
-    }
-  }
+      this.loggingIn = false;
+    },
+  },
 };
 </script>

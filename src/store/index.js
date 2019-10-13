@@ -16,18 +16,12 @@ const database = new VuexORM.Database();
 // Register models to Database
 database.register(Child);
 
-const token = store.get("access_token");
-
-if (!isUndefined(token)) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
-axios.defaults.baseURL = process.env.VUE_APP_API;
-
 // VuexORM Plugins
 VuexORM.use(VuexORMAxios, {
   database,
   http: {
-    axios,
+    baseURL: process.env.VUE_APP_API,
+    access_token: () => store.get("access_token"),
     onResponse: response =>
       get(response, "data.items", get(response, "data", response)),
   },

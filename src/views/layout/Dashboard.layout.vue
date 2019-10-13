@@ -15,16 +15,19 @@
 </template>
 
 <script>
+import store from "store";
+
 export default {
   data() {
     return {
-      drawer: true
+      drawer: true,
     };
   },
   methods: {
     logout() {
+      store.remove("access_token");
       this.$router.replace("/");
-    }
-  }
+    },
+  },
 };
 </script>
