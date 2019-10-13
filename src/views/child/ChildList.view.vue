@@ -9,26 +9,28 @@
         v-card-text.pa-0
           v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="5" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
             template(v-slot:item.action="{item}")
-              v-btn(text color="primary" @click="activeChild = item; isEditing = true;") Edit
-              v-btn(text color="error" @click="activeChild = item; confirmDelete = true;") Delete
-    v-dialog(v-model="isEditing" max-width="800px" persistent)
-      ChildEditDialog(@dismissed="onDismissed" :data="activeChild")        
-    v-dialog(v-model="confirmDelete" v-if="confirmDelete" width="500")
+              v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
+              v-btn(text color="error" @click="activeChild = item.id; confirmDelete = true;") Delete
+    v-dialog(v-model="isEditing" max-width="800px" persistent v-if="isEditing")
+      ChildEditDialog(@dismissed="onDismissed" :child="selectedChild")        
+    v-dialog(v-model="confirmDelete" width="500" v-if="selectedChild")
       v-card
         v-card-title(primary-title) Are you sure you want to delete&nbsp;
-          i {{activeChild.firstName}} {{activeChild.lastName}}? 
+          i {{selectedChild.firstName}} {{selectedChild.lastName}}? 
         v-divider
         v-card-actions
           div.flex-grow-1
           v-btn(color="primary" text @click="confirmDelete = false") No     
-          v-btn(color="primary" @click="removeChild(activeChild)") Yes     
+          v-btn(color="primary" @click="removeChild(activeChild)" :loading="selectedChild.$isDeleting") Yes     
 </template>
 
 <script>
 import axios from "axios";
 import { isNull } from "lodash";
+import { mapActions } from "vuex";
 
 import ChildEditDialog from "./ChildEdit.dialog";
+import Child from "../../store/entities/child.entity";
 
 export default {
   components: { ChildEditDialog },
@@ -44,24 +46,31 @@ export default {
         {
           text: "First Name",
           sortable: true,
-          value: "firstName"
+          value: "firstName",
         },
         {
           text: "Last Name",
           sortable: true,
-          value: "lastName"
+          value: "lastName",
         },
         {
           value: "action",
           align: "end",
-          sortable: false
-        }
+          sortable: false,
+        },
       ],
-      children: []
     };
   },
-  created() {
-    this.getChildren();
+  computed: {
+    children() {
+      return Child.all() || [];
+    },
+    selectedChild() {
+      return Child.find(this.activeChild);
+    },
+  },
+  async created() {
+    await Child.$fetch();
   },
   methods: {
     editChild(child) {
@@ -71,27 +80,17 @@ export default {
 
       this.isEditing = true;
     },
-    removeChild(child) {
-      this.confirmDelete = false;
+    async removeChild(id) {
+      await Child.$delete({ params: { id } });
 
-      axios
-        .delete(`${process.env.VUE_APP_API}/children/${child.id}`)
-        .then(() => {
-          this.getChildren();
-        });
+      Child.delete(id);
+      this.confirmDelete = false;
     },
     onDismissed() {
       this.isEditing = false;
-      this.getChildren();
       this.activeChild = null;
+      Child.$fetch();
     },
-    getChildren() {
-      this.isLoading = true;
-      axios.get(`${process.env.VUE_APP_API}/children`).then(children => {
-        this.children = children.data.items;
-        this.isLoading = false;
-      });
-    }
-  }
+  },
 };
 </script>
