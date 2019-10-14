@@ -15,17 +15,16 @@ import "./assets/style.css";
 // FilePond plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-Vue.config.productionTip = false;
 
+Vue.config.productionTip = false;
 Vue.component(
   "FilePond",
   vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 );
-
 Vue.use(Cloudinary, {
   configuration: {
-    cloudName: process.env.VUE_APP_CLAUDINARY_CLOUD_NAME
-  }
+    cloudName: process.env.VUE_APP_CLAUDINARY_CLOUD_NAME,
+  },
 });
 Vue.use(axios);
 
@@ -33,5 +32,5 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount("#app");
