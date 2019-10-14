@@ -5,6 +5,7 @@ import store from "store";
 import { isUndefined, get } from "lodash";
 import VuexORM from "@vuex-orm/core";
 import VuexORMAxios from "@vuex-orm/plugin-axios";
+import router from "../router";
 
 // Entities
 import Child from "@entities/child.entity";
@@ -24,6 +25,12 @@ VuexORM.use(VuexORMAxios, {
     access_token: () => store.get("access_token"),
     onResponse: response =>
       get(response, "data.items", get(response, "data", response)),
+    onUnauthorised() {
+      router.replace({
+        name: "login",
+        params: { returnTo: router.currentRoute.name },
+      });
+    },
   },
 });
 
