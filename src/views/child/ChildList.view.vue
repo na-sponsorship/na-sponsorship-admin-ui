@@ -7,7 +7,7 @@
           v-col(cols="8") Children
           v-col: v-text-field(label="Search" v-model="searchQuery")
         v-card-text.pa-0
-          v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="5" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
+          v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
             template(v-slot:item.action="{item}")
               v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
               v-btn(text color="error" @click="activeChild = item.id; confirmDelete = true;") Delete
