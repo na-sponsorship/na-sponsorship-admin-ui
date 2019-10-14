@@ -30,7 +30,7 @@ export default {
     async login(credentials) {
       this.loggingIn = true;
 
-      const returnTo = this.$route.params.returnTo || "dashboard";
+      const returnTo = this.$route.params.returnTo || "child.list";
 
       try {
         const { data } = await this.$axios.post(
