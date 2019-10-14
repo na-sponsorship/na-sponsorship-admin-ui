@@ -26,7 +26,16 @@ export default new Router({
             title: "Children",
           },
           component: () =>
-            import(/* webpackChunkName: "dashboard" */ "@views/child/ChildList.view.vue"),
+            import(/* webpackChunkName: "child.list" */ "@views/child/ChildList.view.vue"),
+        },
+        {
+          path: "/dashboard/users",
+          name: "user.list",
+          meta: {
+            title: "Users",
+          },
+          component: () =>
+            import(/* webpackChunkName: "user.list" */ "@views/user/UserList.view.vue"),
         },
       ],
     },
