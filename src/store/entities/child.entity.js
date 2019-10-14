@@ -1,5 +1,4 @@
 import { Model } from "@vuex-orm/core";
-import { get } from "lodash";
 
 export default class Child extends Model {
   static entity = "children";

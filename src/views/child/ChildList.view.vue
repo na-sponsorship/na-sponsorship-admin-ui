@@ -1,16 +1,15 @@
 <template lang="pug">
-  v-container
+  v-container(fluid)
+    v-row(align-content="center")
+      v-col: v-text-field(label="Search" v-model="searchQuery")
+      v-col.flex-grow-0(align-self="center"): v-btn(color="primary" @click="editChild(null)") Add Child
     v-row
-      v-col(cols="12"): v-row(justify="end"): v-col.py-0(cols="auto"): v-btn(color="primary" @click="editChild(null)") Add Child
-      v-col: v-card
-        v-card-title: v-row(no-gutters dense align="center" justify="space-between")
-          v-col(cols="8") Children
-          v-col: v-text-field(label="Search" v-model="searchQuery")
-        v-card-text.pa-0
-          v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
-            template(v-slot:item.action="{item}")
-              v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
-              v-btn(text color="error" @click="activeChild = item.id; confirmDelete = true;") Delete
+      v-col
+        v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
+          template(v-slot:item.action="{item}")
+            v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
+            v-btn(text color="error" @click="activeChild = item.id; confirmDelete = true;") Delete
+          
     v-dialog(v-model="isEditing" max-width="800px" persistent v-if="isEditing")
       ChildEditDialog(@dismissed="onDismissed" :child="selectedChild")        
     v-dialog(v-model="confirmDelete" width="500" v-if="selectedChild")
