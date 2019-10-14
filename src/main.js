@@ -6,6 +6,7 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import axios from "./plugins/axios";
+import { ValidationProvider, extend } from "vee-validate";
 import Cloudinary from "cloudinary-vue";
 
 import "filepond/dist/filepond.min.css";
@@ -21,6 +22,7 @@ Vue.component(
   "FilePond",
   vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 );
+Vue.component("ValidationProvider", ValidationProvider);
 Vue.use(Cloudinary, {
   configuration: {
     cloudName: process.env.VUE_APP_CLAUDINARY_CLOUD_NAME,
