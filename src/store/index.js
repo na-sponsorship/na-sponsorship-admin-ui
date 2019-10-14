@@ -1,8 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
 import store from "store";
-import { isUndefined, get } from "lodash";
+import { get } from "lodash";
 import VuexORM from "@vuex-orm/core";
 import VuexORMAxios from "@vuex-orm/plugin-axios";
 import router from "../router";
