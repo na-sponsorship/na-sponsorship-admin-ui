@@ -11,11 +11,11 @@ export default new Router({
       path: "/",
       name: "login",
       component: () =>
-        import(/* webpackChunkName: "login" */ "@views/Login.view.vue")
+        import(/* webpackChunkName: "login" */ "@views/Login.view.vue"),
     },
     {
       path: "/dashboard",
-      name: "login",
+      name: "dashboard",
       component: () =>
         import(/* webpackChunkName: "dashboard" */ "@views/layout/Dashboard.layout.vue"),
       children: [
@@ -23,18 +23,18 @@ export default new Router({
           path: "/",
           name: "child.list",
           meta: {
-            title: "Children"
+            title: "Children",
           },
           component: () =>
-            import(/* webpackChunkName: "dashboard" */ "@views/child/ChildList.view.vue")
-        }
-      ]
+            import(/* webpackChunkName: "dashboard" */ "@views/child/ChildList.view.vue"),
+        },
+      ],
     },
     {
       path: "/about",
       name: "about",
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
-    }
-  ]
+        import(/* webpackChunkName: "about" */ "./views/About.vue"),
+    },
+  ],
 });
