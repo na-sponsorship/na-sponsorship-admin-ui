@@ -1,17 +1,21 @@
 <template lang="pug">
-	div
-		v-navigation-drawer(v-model="drawer" app)
-			v-list(dense)
-				v-list-item(@click="")
-					v-list-item-action: v-icon fa-home
-					v-list-item-content: v-list-item-title Children
-		v-app-bar(app dark color="indigo")
-			v-app-bar-nav-icon(@click.stop="drawer = !drawer")
-			v-toolbar-title {{$route.meta.title}}    
-			v-spacer
-			v-toolbar-items
-				v-btn(text @click="logout()") Logout
-		v-content: v-layout: v-flex: router-view
+	v-container(fluid fill-height).indigo.darken-2.align-start
+		v-row(dense)
+			v-col.flex-grow-0.mx-5.mt-10
+				v-card(color="transparen red" flat)
+					v-navigation-drawer(floating permanent)
+						v-list(dense rounded)
+							v-list-item(v-for="(item, index) in items" :key="index" link :to="item.path" exact)
+								v-list-item-icon: v-icon.tw-w-6.tw-mr-6 {{item.icon}}
+								v-list-item-content: v-list-item-title {{item.title}}
+							v-list-item(@click="logout()")
+								//- v-list-item-icon: v-icon.tw-w-6.tw-mr-6 fa-lock
+								v-list-item-content.red--text.accent-4: v-list-item-title Log out
+			v-col.flex-grow-1
+				v-card(elevation="12" shaped)
+					v-card-title {{$route.meta.title}}
+					v-card-text
+						router-view
 </template>
 
 <script>
@@ -20,7 +24,10 @@ import store from "store";
 export default {
   data() {
     return {
-      drawer: true,
+      items: [
+        { title: "Children", icon: "fa-tachometer-alt", path: "/dashboard" },
+        { title: "Users", icon: "fa-users", path: '/dashboard/users'},
+      ],
     };
   },
   methods: {
