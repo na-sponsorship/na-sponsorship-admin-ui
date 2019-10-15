@@ -2,7 +2,7 @@
 	v-container(fluid fill-height).indigo.darken-2.align-start
 		v-row(dense)
 			v-col.flex-grow-0.mx-5.mt-10
-				img(:src="logo")
+				img(:src="logo").mt-n10.mb-2
 				v-card(color="transparen red" flat)
 					v-navigation-drawer(floating permanent)
 						v-list(dense rounded)
