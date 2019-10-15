@@ -8,6 +8,7 @@ import router from "../router";
 
 // Entities
 import Child from "@entities/child.entity";
+import User from "@entities/user.entity";
 
 Vue.use(Vuex);
 
@@ -15,6 +16,7 @@ const database = new VuexORM.Database();
 
 // Register models to Database
 database.register(Child);
+database.register(User);
 
 // VuexORM Plugins
 VuexORM.use(VuexORMAxios, {
