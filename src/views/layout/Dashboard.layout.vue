@@ -2,6 +2,7 @@
 	v-container(fluid fill-height).indigo.darken-2.align-start
 		v-row(dense)
 			v-col.flex-grow-0.mx-5.mt-10
+				img(:src="logo")
 				v-card(color="transparen red" flat)
 					v-navigation-drawer(floating permanent)
 						v-list(dense rounded)
@@ -24,9 +25,10 @@ import store from "store";
 export default {
   data() {
     return {
+      logo: require("../../assets/light@3x.png"),
       items: [
         { title: "Children", icon: "fa-tachometer-alt", path: "/dashboard" },
-        { title: "Users", icon: "fa-users", path: '/dashboard/users'},
+        { title: "Users", icon: "fa-users", path: "/dashboard/users" },
       ],
     };
   },
