@@ -9,10 +9,10 @@
 				v-data-table.elevation-0(:headers="headers" :items="users" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
 					template(v-slot:item.action="{item}")
 						v-btn(text color="error" @click="activeUser = item.id; confirmDelete = true;") Delete					      
-		v-dialog(v-model="confirmDelete" width="500" v-if="selectedUser")
+		v-dialog(v-model="confirmDelete" width="700" v-if="selectedUser")
 			v-card
 				v-card-title(primary-title) Are you sure you want to delete&nbsp;
-					i {{selectedUser.username}} {{selectedUser.lastName}}? 
+					strong "{{selectedUser.username}} {{selectedUser.lastName}}"? 
 				v-divider
 				v-card-actions
 					div.flex-grow-1

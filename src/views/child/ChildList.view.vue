@@ -10,12 +10,12 @@
             v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
             v-btn(text color="error" @click="activeChild = item.id; confirmDelete = true;") Delete
           
-    v-dialog(v-model="isEditing" max-width="800px" persistent v-if="isEditing")
+    v-dialog(v-model="isEditing" max-width="1000" persistent v-if="isEditing")
       ChildEditDialog(@dismissed="onDismissed" :child="selectedChild")        
-    v-dialog(v-model="confirmDelete" width="500" v-if="selectedChild")
+    v-dialog(v-model="confirmDelete" width="700" v-if="selectedChild")
       v-card
         v-card-title(primary-title) Are you sure you want to delete&nbsp;
-          i {{selectedChild.firstName}} {{selectedChild.lastName}}? 
+          strong "{{selectedChild.firstName}} {{selectedChild.lastName}}"? 
         v-divider
         v-card-actions
           div.flex-grow-1
