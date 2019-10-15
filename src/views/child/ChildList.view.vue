@@ -29,7 +29,7 @@ import { isNull } from "lodash";
 import { mapActions } from "vuex";
 
 import ChildEditDialog from "./ChildEdit.dialog";
-import Child from "../../store/entities/child.entity";
+import ChildEntity from "../../store/entities/child.entity";
 
 export default {
   components: { ChildEditDialog },
@@ -62,14 +62,14 @@ export default {
   },
   computed: {
     children() {
-      return Child.all() || [];
+      return ChildEntity.all() || [];
     },
     selectedChild() {
-      return Child.find(this.activeChild);
+      return ChildEntity.find(this.activeChild);
     },
   },
   async created() {
-    await Child.$fetch();
+    await ChildEntity.$fetch();
   },
   methods: {
     editChild(child) {
@@ -80,15 +80,15 @@ export default {
       this.isEditing = true;
     },
     async removeChild(id) {
-      await Child.$delete({ params: { id } });
+      await ChildEntity.$delete({ params: { id } });
 
-      Child.delete(id);
+      ChildEntity.delete(id);
       this.confirmDelete = false;
     },
     onDismissed() {
       this.isEditing = false;
       this.activeChild = null;
-      Child.$fetch();
+      ChildEntity.$fetch();
     },
   },
 };
