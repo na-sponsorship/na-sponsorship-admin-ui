@@ -11,7 +11,7 @@ v-card
               v-layout
                 ValidationProvider(rules="required|email" v-slot="{errors}" name="email" slim)
                   v-text-field.flex(v-model="updatedUser.username" label="Email" :error-messages="errors")
-                ValidationProvider(rules="required" v-slot="{errors}" name="temporary password" slim)
+                ValidationProvider(rules="required|min:6" v-slot="{errors}" name="temporary password" slim)
                   v-text-field.flex(v-model="updatedUser.password" :type="passwordVisibility ? 'input' : 'password'" @click:append="passwordVisibility = !passwordVisibility" :append-icon="passwordVisibility ? 'fa fa-eye': 'fa fa-eye-slash'" label="Temporary Password" :error-messages="errors" hint="User will be asked to change their password upon logging in" :persistent-hint="true")                            
   v-card-actions
     v-spacer
