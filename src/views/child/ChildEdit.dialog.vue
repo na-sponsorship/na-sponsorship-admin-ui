@@ -42,7 +42,7 @@ v-card
 <script>
 import store from "store";
 import axios from "axios";
-import { isNull, isEmpty } from "lodash";
+import { isNull, isEmpty, replace } from "lodash";
 import { CldImage } from "cloudinary-vue";
 
 import ChildEntity from "../../store/entities/child.entity";
@@ -59,6 +59,7 @@ export default {
   },
   created() {
     this.updatedChild = new ChildEntity(this.child);
+    this.updatedChild.story = replace(this.updatedChild.story, /\n/g, " ");
   },
   computed: {
     isEditing() {
