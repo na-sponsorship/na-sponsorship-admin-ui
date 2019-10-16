@@ -7,8 +7,8 @@
 					v-navigation-drawer(floating permanent)
 						v-list(dense rounded)
 							v-list-item(v-for="(item, index) in items" :key="index" link :to="item.path" exact)
-								v-list-item-icon: v-icon {{item.icon}}
-								v-list-item-content: v-list-item-title.ml-2 {{item.title}}
+								v-list-item-icon.mr-4: v-icon {{item.icon}}
+								v-list-item-content: v-list-item-title {{item.title}}
 							v-list-item(@click="logout()")
 								v-list-item-content.red--text.accent-4: v-list-item-title Log out
 			v-col.flex-grow-1
