@@ -7,12 +7,25 @@ export default class User extends Model {
     return {
       id: this.attr(null),
       username: this.attr(null),
+      password: this.attr(null),
     };
   }
 
   static methodConf = {
     http: {
-      url: "auth/users",
+      url: "auth",
+    },
+    methods: {
+      $fetch: {
+        http: {
+          url: "/users",
+        },
+      },
+      $create: {
+        http: {
+          url: "/register",
+        },
+      },
     },
   };
 }

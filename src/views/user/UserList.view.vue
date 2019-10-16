@@ -8,7 +8,9 @@
 			v-col
 				v-data-table.elevation-0(:headers="headers" :items="users" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
 					template(v-slot:item.action="{item}")
-						v-btn(text color="error" @click="activeUser = item.id; confirmDelete = true;") Delete					      
+						v-btn(text color="error" @click="activeUser = item.id; confirmDelete = true;") Delete
+		v-dialog(v-model="isEditing" max-width="700" persistent v-if="isEditing")
+			UserEditDialog(@dismissed="onDismissed" :user="selectedUser")                    
 		v-dialog(v-model="confirmDelete" width="700" v-if="selectedUser")
 			v-card
 				v-card-title(primary-title) Are you sure you want to delete&nbsp;
@@ -21,13 +23,16 @@
 </template>
 
 <script>
-import { get } from "lodash";
+import { get, isNull } from "lodash";
 
 import UserEntity from "../../store/entities/user.entity";
+import UserEditDialog from "./UserEdit.dialog";
 
 export default {
+  components: { UserEditDialog },
   data() {
     return {
+      isEditing: false,
       isLoading: false,
       confirmDelete: false,
       activeUser: null,
@@ -73,7 +78,17 @@ export default {
       }
       this.confirmDelete = false;
     },
-    edituser(user) {},
+    editUser(user) {
+      if (!isNull(user)) {
+        this.activeUser = user;
+      }
+
+      this.isEditing = true;
+    },
+    onDismissed() {
+      this.isEditing = false;
+      this.activeChild = null;
+    },
   },
 };
 </script>
