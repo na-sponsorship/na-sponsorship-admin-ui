@@ -10,8 +10,8 @@
 					template(v-slot:item.action="{item}")
 						v-btn(text color="error" @click="activeUser = item.id; confirmDelete = true;") Delete
 		v-dialog(v-model="isEditing" max-width="700" persistent v-if="isEditing")
-			UserEditDialog(@dismissed="onDismissed" :user="selectedUser")                    
-		v-dialog(v-model="confirmDelete" width="700" v-if="selectedUser")
+			UserEditDialog(@dismissed="onDismissed" :user="activeUser")                    
+		v-dialog(v-model="confirmDelete" width="700" v-if="activeUser")
 			v-card
 				v-card-title(primary-title) Are you sure you want to delete&nbsp;
 					strong "{{selectedUser.username}} {{selectedUser.lastName}}"? 
@@ -19,7 +19,7 @@
 				v-card-actions
 					div.flex-grow-1
 					v-btn(color="primary" text @click="confirmDelete = false") No     
-					v-btn(color="primary" @click="removeUser(activeUser)" :loading="selectedUser.$isDeleting") Yes     
+					v-btn(color="primary" @click="removeUser(selectedUser)" :loading="selectedUser.$isDeleting") Yes     
 </template>
 
 <script>
@@ -63,17 +63,16 @@ export default {
       return UserEntity.all() || [];
     },
     selectedUser() {
-      return UserEntity.find(this.activeUser);
+      return UserEntity.find(this.activeUser) || {};
     },
   },
   methods: {
-    async removeUser(id) {
+    async removeUser(user) {
       try {
-        await UserEntity.$delete({ params: { id } });
-
-        UserEntity.delete(id);
+        await UserEntity.$delete({ params: { id: user.id } });
+        UserEntity.delete(user.id);
       } catch (err) {
-        const message = (this.toast = true);
+        this.toast = true;
         this.toast_message = get(err, "response.data.message");
       }
       this.confirmDelete = false;
@@ -87,7 +86,7 @@ export default {
     },
     onDismissed() {
       this.isEditing = false;
-      this.activeChild = null;
+      this.activeUser = null;
     },
   },
 };

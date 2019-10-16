@@ -21,6 +21,11 @@ export default class User extends Model {
           url: "/users",
         },
       },
+      $delete: {
+        http: {
+          url: "/users/:id",
+        },
+      },
       $create: {
         http: {
           url: "/register",
