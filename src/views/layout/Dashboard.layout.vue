@@ -2,15 +2,14 @@
 	v-container(fluid fill-height).indigo.darken-2.align-start
 		v-row(dense)
 			v-col.flex-grow-0.mx-5.mt-10
-				img(:src="logo").mt-n10.mb-2
+				img(:src="logo" width="100%").mt-n10.mb-2
 				v-card(flat)
 					v-navigation-drawer(floating permanent)
 						v-list(dense rounded)
 							v-list-item(v-for="(item, index) in items" :key="index" link :to="item.path" exact)
-								v-list-item-icon: v-icon.tw-w-6.tw-mr-6 {{item.icon}}
-								v-list-item-content: v-list-item-title {{item.title}}
+								v-list-item-icon: v-icon {{item.icon}}
+								v-list-item-content: v-list-item-title.ml-2 {{item.title}}
 							v-list-item(@click="logout()")
-								//- v-list-item-icon: v-icon.tw-w-6.tw-mr-6 fa-lock
 								v-list-item-content.red--text.accent-4: v-list-item-title Log out
 			v-col.flex-grow-1
 				v-card(elevation="12" shaped)

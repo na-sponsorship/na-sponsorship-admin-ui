@@ -11,7 +11,6 @@ import Cloudinary from "cloudinary-vue";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-import "./assets/style.css";
 
 // FilePond plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
