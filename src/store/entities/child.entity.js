@@ -15,6 +15,7 @@ export default class Child extends Model {
       story: this.attr(""),
       sponsorsNeeded: this.attr(2),
       activeSponsors: this.attr(0),
+      deleted: this.attr(false),
     };
   }
 }

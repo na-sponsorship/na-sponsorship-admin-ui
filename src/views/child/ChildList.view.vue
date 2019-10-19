@@ -24,9 +24,7 @@
 </template>
 
 <script>
-import axios from "axios";
 import { isNull } from "lodash";
-import { mapActions } from "vuex";
 
 import ChildEditDialog from "./ChildEdit.dialog";
 import ChildEntity from "../../store/entities/child.entity";
@@ -62,7 +60,11 @@ export default {
   },
   computed: {
     children() {
-      return ChildEntity.all() || [];
+      return (
+        ChildEntity.query()
+          .where("deleted", false)
+          .get() || []
+      );
     },
     selectedChild() {
       return ChildEntity.find(this.activeChild);
