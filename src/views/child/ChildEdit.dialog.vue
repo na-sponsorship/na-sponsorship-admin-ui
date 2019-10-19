@@ -34,7 +34,6 @@ v-card
             v-text-field.flex(v-model="updatedChild.sponsorsNeeded" label="Sponsors Needed")
             v-text-field.flex(v-model="updatedChild.activeSponsors" label="Active Sponsors" disabled)
   v-card-actions
-    v-btn(text color="secondary" @click="initStripe(updatedChild.id)") Initialize Stripe
     v-spacer
     v-btn(text color="primary" @click="dismiss()") Cancel
     v-btn(color="primary" @click="save(updatedChild)" :loading="isSaving") {{isEditing ? 'Save' : 'Add'}}   
@@ -110,20 +109,6 @@ export default {
     },
   },
   methods: {
-    async initStripe(id) {
-      const token = store.get("access_token");
-
-      await axios.get(
-        `${process.env.VUE_APP_API}/children/initStripe/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      this.dismiss();
-    },
     async save(child) {
       const isValid = await this.$refs.form.validate();
 
