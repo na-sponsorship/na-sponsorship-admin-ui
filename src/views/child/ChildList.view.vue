@@ -6,14 +6,15 @@
     v-row
       v-col
         v-tabs
-          v-tab All
-          v-tab Archived
+          v-tab All ({{children.length}})
+          v-tab Archived ({{archivedChildren.length}})
           v-tab-item
             v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
               template(v-slot:item.action="{item}")
                 v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
                 v-btn(text color="error" @click="activeChild = item.id; confirmArchive = true;") Archive
-          v-tab-item
+          v-tab-item.pt-3
+            span.mx-5 Archived children are not displayed to the user and cannot be sponsored. Any existing sponsorships are continued.
             v-data-table.elevation-0(:headers="headers" :items="archivedChildren" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
               template(v-slot:item.action="{item}")
                 v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
@@ -31,7 +32,7 @@
           v-btn(color="primary" @click="archiveChild(selectedChild)") Yes     
     v-dialog(v-model="confirmUnarchive" width="700" v-if="selectedChild")
       v-card
-        v-card-title(primary-title) Are you sure you want to UnArchive&nbsp;
+        v-card-title(primary-title) Are you sure you want to Unarchive&nbsp;
           strong "{{selectedChild.firstName}} {{selectedChild.lastName}}"? 
         v-divider
         v-card-actions
