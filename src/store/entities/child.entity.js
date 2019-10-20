@@ -30,6 +30,10 @@ export default class Child extends Model {
     });
   }
 
+  get name() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
   async archive() {
     return await Child.getAxiosInstance().post(`/children/archive/${this.id}`);
   }
