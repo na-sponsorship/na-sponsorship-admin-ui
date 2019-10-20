@@ -13,50 +13,42 @@
               template(v-slot:item.index="{item}") {{children.indexOf(item) + 1}}
               template(v-slot:item.action="{item}")
                 v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
-                v-btn(text color="error" @click="activeChild = item.id; confirmArchive = true;") Archive
+                v-btn(text color="error" @click="activeChild = item.id; $refs.archiveDialog.open()") Archive
           v-tab-item.pt-3
             span.mx-5 Archived children are not displayed to the user and cannot be sponsored. Any existing sponsorships are continued.
             v-data-table.elevation-0(:headers="headers" :items="archivedChildren" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
               template(v-slot:item.index="{item}") {{archivedChildren.indexOf(item) + 1}}
               template(v-slot:item.action="{item}")
                 v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
-                v-btn(text color="success" @click="activeChild = item.id; confirmUnarchive = true;") Unarchive
+                v-btn(text color="success" @click="activeChild = item.id; $refs.unarchiveDialog.open()") Unarchive
+                v-btn(text color="error" @click="activeChild = item.id; $refs.deleteDialog.open()") Delete
     v-dialog(v-model="isEditing" max-width="1000" persistent v-if="isEditing")
       ChildEditDialog(@dismissed="onDismissed" :child="selectedChild")        
-    v-dialog(v-model="confirmArchive" width="700" v-if="selectedChild")
-      v-card
-        v-card-title(primary-title) Are you sure you want to Archive&nbsp;
-          strong "{{selectedChild.firstName}} {{selectedChild.lastName}}"? 
-        v-divider
-        v-card-actions
-          div.flex-grow-1
-          v-btn(color="primary" text @click="confirmArchive = false") No     
-          v-btn(color="primary" @click="archiveChild(selectedChild)") Yes     
-    v-dialog(v-model="confirmUnarchive" width="700" v-if="selectedChild")
-      v-card
-        v-card-title(primary-title) Are you sure you want to Unarchive&nbsp;
-          strong "{{selectedChild.firstName}} {{selectedChild.lastName}}"? 
-        v-divider
-        v-card-actions
-          div.flex-grow-1
-          v-btn(color="primary" text @click="confirmUnarchive = false") No     
-          v-btn(color="primary" @click="unArchiveChild(selectedChild)") Yes     
+    DialogUi(ref="archiveDialog" :title="`Are you sure you want to archive \"${selectedChild.name}\"?`" @onConfirm="archiveChild(selectedChild)")
+      p.mt-5
+        strong Note: 
+        | This will hide the child and prevent them from being sponsored. Existing sponsorships will continue.    
+    DialogUi(ref="unarchiveDialog" :title="`Are you sure you want to unarchive \"${selectedChild.name}\"?`" @onConfirm="unArchiveChild(selectedChild)")
+    DialogUi(ref="deleteDialog" :title="`Are you sure you want to delete \"${selectedChild.name}\"?`" @onConfirm="deleteChild(selectedChild)")
+      | This action cannot be undone.
+      p.mt-5
+        strong Note: 
+        | This child will be removed from the system. Existing sponsorships will be terminated. Sponsors that are sponsoring this child will be notified that their sponsorship has been terminated.
 </template>
 
 <script>
 import { isNull } from "lodash";
+import DialogUi from "../../components/dialog.ui";
 
 import ChildEditDialog from "./ChildEdit.dialog";
 import ChildEntity from "../../store/entities/child.entity";
 
 export default {
-  components: { ChildEditDialog },
+  components: { ChildEditDialog, DialogUi },
   data() {
     return {
       isLoading: false,
       isEditing: false,
-      confirmArchive: false,
-      confirmUnarchive: false,
       activeChild: null,
       searchQuery: null,
       editedIndex: -1,
@@ -100,7 +92,7 @@ export default {
       );
     },
     selectedChild() {
-      return ChildEntity.find(this.activeChild);
+      return ChildEntity.find(this.activeChild) || new ChildEntity();
     },
   },
   async created() {
