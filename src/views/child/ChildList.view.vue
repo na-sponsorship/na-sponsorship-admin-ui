@@ -5,22 +5,39 @@
       v-col.flex-grow-0(align-self="center"): v-btn(color="primary" @click="editChild(null)") Add Child
     v-row
       v-col
-        v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
-          template(v-slot:item.action="{item}")
-            v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
-            v-btn(text color="error" @click="activeChild = item.id; confirmDelete = true;") Delete
-          
+        v-tabs
+          v-tab All
+          v-tab Archived
+          v-tab-item
+            v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
+              template(v-slot:item.action="{item}")
+                v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
+                v-btn(text color="error" @click="activeChild = item.id; confirmArchive = true;") Archive
+          v-tab-item
+            v-data-table.elevation-0(:headers="headers" :items="archivedChildren" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
+              template(v-slot:item.action="{item}")
+                v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
+                v-btn(text color="success" @click="activeChild = item.id; confirmUnarchive = true;") Unarchive
     v-dialog(v-model="isEditing" max-width="1000" persistent v-if="isEditing")
       ChildEditDialog(@dismissed="onDismissed" :child="selectedChild")        
-    v-dialog(v-model="confirmDelete" width="700" v-if="selectedChild")
+    v-dialog(v-model="confirmArchive" width="700" v-if="selectedChild")
       v-card
-        v-card-title(primary-title) Are you sure you want to delete&nbsp;
+        v-card-title(primary-title) Are you sure you want to Archive&nbsp;
           strong "{{selectedChild.firstName}} {{selectedChild.lastName}}"? 
         v-divider
         v-card-actions
           div.flex-grow-1
-          v-btn(color="primary" text @click="confirmDelete = false") No     
-          v-btn(color="primary" @click="removeChild(activeChild)" :loading="selectedChild.$isDeleting") Yes     
+          v-btn(color="primary" text @click="confirmArchive = false") No     
+          v-btn(color="primary" @click="archiveChild(selectedChild)") Yes     
+    v-dialog(v-model="confirmUnarchive" width="700" v-if="selectedChild")
+      v-card
+        v-card-title(primary-title) Are you sure you want to UnArchive&nbsp;
+          strong "{{selectedChild.firstName}} {{selectedChild.lastName}}"? 
+        v-divider
+        v-card-actions
+          div.flex-grow-1
+          v-btn(color="primary" text @click="confirmUnarchive = false") No     
+          v-btn(color="primary" @click="unArchiveChild(selectedChild)") Yes     
 </template>
 
 <script>
@@ -35,7 +52,8 @@ export default {
     return {
       isLoading: false,
       isEditing: false,
-      confirmDelete: false,
+      confirmArchive: false,
+      confirmUnarchive: false,
       activeChild: null,
       searchQuery: null,
       editedIndex: -1,
@@ -62,7 +80,14 @@ export default {
     children() {
       return (
         ChildEntity.query()
-          .where("deleted", false)
+          .where("archived", false)
+          .get() || []
+      );
+    },
+    archivedChildren() {
+      return (
+        ChildEntity.query()
+          .where("archived", true)
           .get() || []
       );
     },
@@ -81,11 +106,17 @@ export default {
 
       this.isEditing = true;
     },
-    async removeChild(id) {
-      await ChildEntity.$delete({ params: { id } });
+    async archiveChild(child) {
+      await child.archive();
+      ChildEntity.update({ where: child.id, data: { archived: true } });
 
-      ChildEntity.delete(id);
-      this.confirmDelete = false;
+      this.confirmArchive = false;
+    },
+    async unArchiveChild(child) {
+      await child.unarchive();
+      ChildEntity.update({ where: child.id, data: { archived: false } });
+
+      this.confirmUnarchive = false;
     },
     onDismissed() {
       this.isEditing = false;

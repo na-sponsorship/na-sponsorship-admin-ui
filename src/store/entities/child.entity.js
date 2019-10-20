@@ -1,4 +1,6 @@
 import { Model } from "@vuex-orm/core";
+import axios from "axios";
+import store from "store";
 
 export default class Child extends Model {
   static entity = "children";
@@ -15,7 +17,26 @@ export default class Child extends Model {
       story: this.attr(""),
       sponsorsNeeded: this.attr(2),
       activeSponsors: this.attr(0),
-      deleted: this.attr(false),
+      archived: this.attr(false),
     };
+  }
+
+  static getAxiosInstance() {
+    return axios.create({
+      baseURL: process.env.VUE_APP_API,
+      headers: {
+        Authorization: `Bearer ${store.get("access_token")}`,
+      },
+    });
+  }
+
+  async archive() {
+    return await Child.getAxiosInstance().post(`/children/archive/${this.id}`);
+  }
+
+  async unarchive() {
+    return await Child.getAxiosInstance().post(
+      `/children/unarchive/${this.id}`
+    );
   }
 }
