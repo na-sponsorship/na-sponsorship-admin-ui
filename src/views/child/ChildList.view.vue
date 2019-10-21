@@ -106,6 +106,10 @@ export default {
 
       this.isEditing = true;
     },
+    async deleteChild(child) {
+      await ChildEntity.$delete({ params: { id: child.id } });
+      ChildEntity.delete(child.id);
+    },
     async archiveChild(child) {
       await child.archive();
       ChildEntity.update({ where: child.id, data: { archived: true } });
