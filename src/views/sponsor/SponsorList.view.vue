@@ -4,7 +4,7 @@
       v-col: v-text-field(label="Search" v-model="searchQuery")
     v-row
       v-col
-        v-data-table.elevation-0(:headers="headers" :items="sponsors" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
+        v-data-table.elevation-0(:headers="headers" :items="sponsors" :items-per-page="10" fixed-header no-data-text="There are no sponsors to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
           template(v-slot:item.index="{item}") {{sponsors.indexOf(item) + 1}}
           template(v-slot:item.children="{item}") {{item.children.length}}
 </template>
