@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import store from "store";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -27,18 +27,15 @@ export default {
     };
   },
   methods: {
+    ...mapActions("app", ["appLogin"]),
     async login(credentials) {
       this.loggingIn = true;
 
       const returnTo = this.$route.params.returnTo || "child.list";
 
       try {
-        const { data } = await this.$axios.post(
-          `${process.env.VUE_APP_API}/auth/login`,
-          credentials
-        );
+        await this.appLogin(credentials);
 
-        store.set("access_token", data.access_token);
         this.$router.replace({ name: returnTo });
       } catch {
         this.incorrectPassword = true;

@@ -11,6 +11,9 @@ import Child from "@entities/child.entity";
 import Sponsor from "@entities/sponsor.entity";
 import User from "@entities/user.entity";
 
+// Modules
+import app from "./modules/app.module";
+
 Vue.use(Vuex);
 
 const database = new VuexORM.Database();
@@ -39,4 +42,7 @@ VuexORM.use(VuexORMAxios, {
 
 export default new Vuex.Store({
   plugins: [VuexORM.install(database)],
+  modules: {
+    app,
+  },
 });
