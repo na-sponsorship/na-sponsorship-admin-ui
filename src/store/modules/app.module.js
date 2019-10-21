@@ -2,10 +2,12 @@ import axios from "axios";
 import store from "store";
 import jwtDecode from "jwt-decode";
 
+const token = store.get("access_token");
+
 export default {
   namespaced: true,
   state: {
-    user: jwtDecode(store.get("access_token")),
+    user: token ? jwtDecode(token) : null,
   },
   mutations: {
     setUser(state, user) {
