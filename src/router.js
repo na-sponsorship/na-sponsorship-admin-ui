@@ -29,6 +29,15 @@ export default new Router({
             import(/* webpackChunkName: "child.list" */ "@views/child/ChildList.view.vue"),
         },
         {
+          path: "/dashboard/sponsors",
+          name: "sponsor.list",
+          meta: {
+            title: "Sponsors",
+          },
+          component: () =>
+            import(/* webpackChunkName: "sponsor.list" */ "@views/sponsor/SponsorList.view.vue"),
+        },
+        {
           path: "/dashboard/users",
           name: "user.list",
           meta: {

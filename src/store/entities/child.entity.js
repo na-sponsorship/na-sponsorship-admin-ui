@@ -18,6 +18,7 @@ export default class Child extends Model {
       sponsorsNeeded: this.attr(2),
       activeSponsors: this.attr(0),
       archived: this.attr(false),
+      sponsors: this.attr([]),
     };
   }
 
