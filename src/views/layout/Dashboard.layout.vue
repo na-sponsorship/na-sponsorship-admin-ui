@@ -27,7 +27,7 @@ export default {
       logo: require("../../assets/light@3x.png"),
       items: [
         { title: "Children", icon: "fa-tachometer-alt", path: "/dashboard" },
-        { title: "Sponsors", icon: "fa-users", path: "/dashboard/sponsors" },
+        { title: "Sponsors", icon: "fa-hand-holding-heart", path: "/dashboard/sponsors" },
         { title: "Users", icon: "fa-users", path: "/dashboard/users" },
       ],
     };
