@@ -7,7 +7,7 @@ const token = store.get("access_token");
 export default {
   namespaced: true,
   state: {
-    user: token ? jwtDecode(token) : null,
+    user: token ? jwtDecode(token) : {},
   },
   mutations: {
     setUser(state, user) {
