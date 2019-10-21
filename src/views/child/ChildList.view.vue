@@ -11,6 +11,7 @@
           v-tab-item
             v-data-table.elevation-0(:headers="headers" :items="children" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
               template(v-slot:item.index="{item}") {{children.indexOf(item) + 1}}
+              template(v-slot:item.sponsors="{item}") {{item.sponsors.length}}
               template(v-slot:item.action="{item}")
                 v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
                 v-btn(text color="error" @click="activeChild = item.id; $refs.archiveDialog.open()") Archive
@@ -18,6 +19,7 @@
             span.mx-5 Archived children are not displayed to the user and cannot be sponsored. Any existing sponsorships are continued.
             v-data-table.elevation-0(:headers="headers" :items="archivedChildren" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
               template(v-slot:item.index="{item}") {{archivedChildren.indexOf(item) + 1}}
+              template(v-slot:item.sponsors="{item}") {{item.sponsors.length}}
               template(v-slot:item.action="{item}")
                 v-btn(text color="primary" @click="activeChild = item.id; isEditing = true;") Edit
                 v-btn(text color="success" @click="activeChild = item.id; $refs.unarchiveDialog.open()") Unarchive
@@ -67,6 +69,11 @@ export default {
           text: "Last Name",
           sortable: true,
           value: "lastName",
+        },
+        {
+          text: "Sponsors",
+          sortable: true,
+          value: "sponsors",
         },
         {
           value: "action",
