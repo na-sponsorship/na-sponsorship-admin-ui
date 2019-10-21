@@ -19,6 +19,7 @@
     "filepond": "^4.4.12",
     "filepond-plugin-file-validate-type": "^1.2.4",
     "filepond-plugin-image-preview": "^4.2.1",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "store": "^2.0.12",
     "vee-validate": "^3.0.3",
