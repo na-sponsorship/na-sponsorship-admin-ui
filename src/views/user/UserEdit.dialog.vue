@@ -12,7 +12,10 @@ v-card
                 ValidationProvider(rules="required|email" v-slot="{errors}" name="email" slim)
                   v-text-field.flex(v-model="updatedUser.username" label="Email" :error-messages="errors")
                 ValidationProvider(rules="required|min:6" v-slot="{errors}" name="temporary password" slim)
-                  v-text-field.flex(v-model="updatedUser.password" :type="passwordVisibility ? 'input' : 'password'" @click:append="passwordVisibility = !passwordVisibility" :append-icon="passwordVisibility ? 'fa fa-eye': 'fa fa-eye-slash'" label="Temporary Password" :error-messages="errors" hint="User will be asked to change their password upon logging in" :persistent-hint="true")                            
+                  v-text-field.flex(v-model="updatedUser.password" :type="passwordVisibility ? 'input' : 'password'" @click:append="passwordVisibility = !passwordVisibility" :append-icon="passwordVisibility ? 'fa fa-eye': 'fa fa-eye-slash'" label="Temporary Password" :error-messages="errors" hint="User will be asked to change their password upon logging in" :persistent-hint="true")
+              v-layout
+                ValidationProvider(rules="required" v-slot="{errors}" name="temporary password" slim)
+                  v-select.flex(v-model="updatedUser.role" :items="roles" label="Role" :error-messages="errors")
   v-card-actions
     v-spacer
     v-btn(text color="primary" @click="$emit('dismissed')") Cancel
@@ -32,6 +35,7 @@ export default {
     return {
       passwordVisibility: false,
       isSaving: false,
+      roles: ["Admin", "Editor"],
       updatedUser: new UserEntity(),
     };
   },

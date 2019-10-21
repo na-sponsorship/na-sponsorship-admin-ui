@@ -6,7 +6,7 @@
 				v-card(flat)
 					v-navigation-drawer(floating permanent)
 						v-list(dense rounded)
-							v-list-item(v-for="(item, index) in items" :key="index" link :to="item.path" exact)
+							v-list-item(v-for="(item, index) in items" :key="index" link :to="item.path" exact v-if="hasPermission(item.role, role)")
 								v-list-item-icon.mr-4: v-icon {{item.icon}}
 								v-list-item-content: v-list-item-title {{item.title}}
 							v-list-item(@click="logout()")
@@ -20,6 +20,7 @@
 
 <script>
 import store from "store";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -27,12 +28,31 @@ export default {
       logo: require("../../assets/light@3x.png"),
       items: [
         { title: "Children", icon: "fa-tachometer-alt", path: "/dashboard" },
-        { title: "Sponsors", icon: "fa-hand-holding-heart", path: "/dashboard/sponsors" },
-        { title: "Users", icon: "fa-users", path: "/dashboard/users" },
+        {
+          title: "Sponsors",
+          icon: "fa-hand-holding-heart",
+          path: "/dashboard/sponsors",
+        },
+        {
+          title: "Users",
+          icon: "fa-users",
+          path: "/dashboard/users",
+          role: ["Admin"],
+        },
       ],
     };
   },
+  computed: {
+    ...mapGetters("app", ["role"]),
+  },
   methods: {
+    hasPermission(requiredPermission, userRole) {
+      if (!requiredPermission) {
+        return true;
+      }
+
+      return requiredPermission.includes(userRole);
+    },
     logout() {
       store.remove("access_token");
       this.$router.replace("/");

@@ -8,6 +8,7 @@ export default class User extends Model {
       id: this.attr(null),
       username: this.attr(null),
       password: this.attr(null),
+      role: this.attr("Editor"),
     };
   }
 
