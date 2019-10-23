@@ -20,7 +20,7 @@ v-card
                   v-text-field.flex(v-model="updatedChild.grade" label="Grade" :error-messages="errors") 
                 ValidationProvider(rules="required" v-slot="{errors}" name="gender" slim)
                   v-select.flex(v-model="updatedChild.gender" :items="['male', 'female']" label="Gender" :error-messages="errors")
-                v-menu(v-model="isSelectingBirthday" :nudge-right="40" transition="scale-transition" offset-y full-width min-width="290px")
+                v-menu(v-model="isSelectingBirthday" :nudge-right="40" transition="scale-transition" offset-y min-width="290px")
                   template(v-slot:activator="{ on }")
                     ValidationProvider(rules="required" v-slot="{errors}" name="date of birth" slim)
                       v-text-field.flex(v-model="updatedChild.dateOfBirth" label="Birthday" prepend-icon="fa-calendar-alt" v-on="on" :error-messages="errors" readonly)
