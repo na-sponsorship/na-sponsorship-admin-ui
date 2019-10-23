@@ -7,6 +7,7 @@
 		v-row
 			v-col
 				v-data-table.elevation-0(:headers="headers" :items="users" :items-per-page="10" fixed-header no-data-text="There are no children to display" :search="searchQuery" :no-results-text="`No children found matching '${searchQuery}'`" :loading="isLoading")
+					template(v-slot:item.name="{value}") {{value === 'null null'? '': value}}
 					template(v-slot:item.action="{item}")
 						v-btn(text color="error" @click="activeUser = item.id; confirmDelete = true;") Delete
 		v-dialog(v-model="isEditing" max-width="700" persistent v-if="isEditing")
@@ -44,6 +45,11 @@ export default {
           text: "Username",
           sortable: true,
           value: "username",
+        },
+        {
+          text: "Name",
+          sortable: true,
+          value: "name",
         },
         {
           value: "action",
