@@ -4,7 +4,9 @@ import store from "store";
 import { get } from "lodash";
 import VuexORM from "@vuex-orm/core";
 import VuexORMAxios from "@vuex-orm/plugin-axios";
+
 import router from "../router";
+import logrocketPlugin from "./plugins/logrocket.plugin";
 
 // Entities
 import Child from "@entities/child.entity";
@@ -41,8 +43,8 @@ VuexORM.use(VuexORMAxios, {
 });
 
 export default new Vuex.Store({
-  plugins: [VuexORM.install(database)],
   modules: {
     app,
   },
+  plugins: [VuexORM.install(database), logrocketPlugin],
 });

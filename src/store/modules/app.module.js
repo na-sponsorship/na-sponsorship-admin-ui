@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from "store";
 import jwtDecode from "jwt-decode";
+import LogRocket from "logrocket";
 
 const token = store.get("access_token");
 
@@ -11,6 +12,10 @@ export default {
   },
   mutations: {
     setUser(state, user) {
+      LogRocket.identify(user.id, {
+        name: `${user.firstName} ${user.lastName}`,
+        email: user.username,
+      });
       state.user = user;
     },
   },

@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import { isNull } from "lodash";
 
 export default class User extends Model {
   static entity = "users";
@@ -7,6 +8,8 @@ export default class User extends Model {
     return {
       id: this.attr(null),
       username: this.attr(null),
+      firstName: this.attr(null),
+      lastName: this.attr(null),
       password: this.attr(null),
       role: this.attr("Editor"),
     };
@@ -34,4 +37,8 @@ export default class User extends Model {
       },
     },
   };
+
+  get name() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }
