@@ -8,16 +8,11 @@ import vuetify from "./plugins/vuetify";
 import axios from "./plugins/axios";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import Cloudinary from "cloudinary-vue";
-import LogRocket from "logrocket";
 
 import "./validation";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-
-// Logrocket
-if (process.env.NODE_ENV === "production") {
-  LogRocket.init(process.env.VUE_APP_LOGROCKET_ID);
-}
+import "./logrocket";
 
 // FilePond plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
