@@ -13,7 +13,7 @@ export default {
   mutations: {
     setUser(state, user) {
       LogRocket.identify(user.id, {
-        name: `${user.firstName} ${user.lastName}`,
+        name: user.name,
         email: user.username,
         role: user.role,
       });
