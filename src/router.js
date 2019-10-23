@@ -15,7 +15,6 @@ export default new Router({
     },
     {
       path: "/dashboard",
-      name: "dashboard",
       component: () =>
         import(/* webpackChunkName: "dashboard" */ "@views/layout/Dashboard.layout.vue"),
       children: [
