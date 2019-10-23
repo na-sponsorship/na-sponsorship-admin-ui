@@ -17,12 +17,12 @@ const aliases = {
   "@lib": "src/lib",
   "@locale": "src/i18n/locale",
   "@mixins": "src/mixins",
-  "@entities": "src/store/entities"
+  "@entities": "src/store/entities",
 };
 
 module.exports = {
   webpack: {},
-  jest: {}
+  jest: {},
 };
 
 for (const alias in aliases) {

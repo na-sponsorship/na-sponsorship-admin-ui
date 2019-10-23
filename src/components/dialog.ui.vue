@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title class="title">{{ title }}</v-card-title>
       <v-card-text class="px-6 mt-n4 py-2" v-if="$slots.default">
-        <slot/>
+        <slot />
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>

@@ -1,21 +1,21 @@
 module.exports = {
   configureWebpack: {
     performance: {
-      hints: false
+      hints: false,
     },
     optimization: {
       splitChunks: {
         minSize: 10000,
-        maxSize: 250000
-      }
+        maxSize: 250000,
+      },
     },
     resolve: {
-      alias: require("./aliases.config").webpack
-    }
+      alias: require("./aliases.config").webpack,
+    },
   },
   css: {
     // Enable CSS source maps.
-    sourceMap: true
+    sourceMap: true,
   },
   devServer: {
     host: "0.0.0.0",
@@ -24,10 +24,10 @@ module.exports = {
         target: {
           host: "0.0.0.0",
           protocol: "http:",
-          port: 3000
+          port: 3000,
         },
-        changeOrigin: true
-      }
-    }
-  }
+        changeOrigin: true,
+      },
+    },
+  },
 };

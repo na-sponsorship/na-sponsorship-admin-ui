@@ -40,7 +40,6 @@ v-card
 </template>
 
 <script>
-import axios from "axios";
 import store from "store";
 import { isNull, replace } from "lodash";
 import { CldImage } from "cloudinary-vue";

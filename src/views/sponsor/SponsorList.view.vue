@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { isNull } from "lodash";
 import DialogUi from "../../components/dialog.ui";
 
 import SponsorEntity from "../../store/entities/sponsor.entity";

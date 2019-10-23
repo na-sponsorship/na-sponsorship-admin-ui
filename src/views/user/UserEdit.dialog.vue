@@ -23,9 +23,7 @@ v-card
 </template>
 
 <script>
-import store from "store";
-import axios from "axios";
-import { isNull, isEmpty } from "lodash";
+import { isNull } from "lodash";
 
 import UserEntity from "../../store/entities/user.entity";
 

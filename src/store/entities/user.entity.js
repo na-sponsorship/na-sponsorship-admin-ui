@@ -1,5 +1,4 @@
 import { Model } from "@vuex-orm/core";
-import { isNull } from "lodash";
 
 export default class User extends Model {
   static entity = "users";
