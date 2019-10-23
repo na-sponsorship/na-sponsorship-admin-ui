@@ -15,6 +15,7 @@ export default {
       LogRocket.identify(user.id, {
         name: `${user.firstName} ${user.lastName}`,
         email: user.username,
+        role: user.role,
       });
       state.user = user;
     },
